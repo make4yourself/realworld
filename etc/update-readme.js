@@ -78,7 +78,7 @@ async function getSortedTable(repos) {
 
   // Add comment showing ranking to ease merges
   output.push('<!--');
-  output.push('  Ranking:');
+  output.push('  排名：');
   const repoRankings = repos.map((e, i) => 
     `    ${(i+1).toString().padStart(2)}: ${e.title}`);
   output.push(...repoRankings);
@@ -86,7 +86,7 @@ async function getSortedTable(repos) {
 
   // Add header
   output.push(...[
-    `> _Sorted by popularity on ${(new Date()).toDateString()}_`,
+    `> _${(new Date()).toDateString()} 人气榜_`,
     '',
     '| 🥇 | 🥈 | 🥉 |',
     '| :---:         |     :---:      |          :---: |',
