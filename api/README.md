@@ -1,28 +1,28 @@
-# RealWorld API Spec
+# RealWorld API 规格
 
-## Running API tests locally
+## 本地执行 API tests
 
-To locally run the provided Postman collection against your backend, execute:
+若要对后端执行对本地运行提供的 Postman collection ，请执行：
 
 ```
 APIURL=http://localhost:3000/api ./run-api-tests.sh
 ```
 
-For more details, see [`run-api-tests.sh`](run-api-tests.sh).
+更多详情请见 [`run-api-tests.sh`](run-api-tests.sh).
 
-## Considerations for your backend with [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
+## 在后端使用 [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) 需要注意的事项
 
-If the backend is about to run on a different host/port than the frontend, make sure to handle `OPTIONS` too and return correct `Access-Control-Allow-Origin` and `Access-Control-Allow-Headers` (e.g. `Content-Type`).
+如果后端是运行在与前端不同的主机/端口上，请确保也处理了`OPTINS` 并且返回正确的 `Access-Control-Allow-Origin` 和 `Access-Control-Allow-Headers` (例如, `Content-Type`)
 
 ### Authentication Header:
 
 `Authorization: Token jwt.token.here`
 
-## JSON Objects returned by API:
+## API 返回的 JSON 对象:
 
-Make sure the right content type like `Content-Type: application/json; charset=utf-8` is correctly returned.
+确保正确的内容类型如 `Content-Type: application/json; charset=utf-8` 被正确的返回。
 
-### Users (for authentication)
+### 用户（Users (for authentication)）
 
 ```JSON
 {
@@ -36,7 +36,7 @@ Make sure the right content type like `Content-Type: application/json; charset=u
 }
 ```
 
-### Profile
+### 用户简况（Profile）
 
 ```JSON
 {
@@ -49,7 +49,7 @@ Make sure the right content type like `Content-Type: application/json; charset=u
 }
 ```
 
-### Single Article
+### 单个文章（Single Article）
 
 ```JSON
 {
@@ -73,7 +73,7 @@ Make sure the right content type like `Content-Type: application/json; charset=u
 }
 ```
 
-### Multiple Articles
+### 多个文章（Multiple Articles）
 
 ```JSON
 {
@@ -114,7 +114,7 @@ Make sure the right content type like `Content-Type: application/json; charset=u
 }
 ```
 
-### Single Comment
+### 单条评论（Single Comment）
 
 ```JSON
 {
@@ -133,7 +133,7 @@ Make sure the right content type like `Content-Type: application/json; charset=u
 }
 ```
 
-### Multiple Comments
+### 多条评论（Multiple Comments）
 
 ```JSON
 {
@@ -152,7 +152,7 @@ Make sure the right content type like `Content-Type: application/json; charset=u
 }
 ```
 
-### List of Tags
+### 标签列表（List of Tags）
 
 ```JSON
 {
@@ -163,9 +163,9 @@ Make sure the right content type like `Content-Type: application/json; charset=u
 }
 ```
 
-### Errors and Status Codes
+### 错误和错误状态码（Errors and Status Codes）
 
-If a request fails any validations, expect a 422 and errors in the following format:
+如果一个请求没有通过任何的验证，那么就会出现 422 并且会有以下格式的错误信息：
 
 ```JSON
 {
@@ -177,22 +177,23 @@ If a request fails any validations, expect a 422 and errors in the following for
 }
 ```
 
-#### Other status codes:
+#### 其他的状态码:
 
-401 for Unauthorized requests, when a request requires authentication but it isn't provided
+401 表示未经授权的请求，当一个请求需要认证，但没有提供认证信息
 
-403 for Forbidden requests, when a request may be valid but the user doesn't have permissions to perform the action
+403 表示被禁止的请求，当请求可能是有效的，但是用户没有执行该操作权限
 
-404 for Not found requests, when a resource can't be found to fulfill the request
+404 表示未找到的请求，当无法找到满足请求的资源时
 
 
-## Endpoints:
+## 端点：
 
-### Authentication:
+### 认证：
 
 `POST /api/users/login`
 
-Example request body:
+请求体样例：
+
 ```JSON
 {
   "user":{
@@ -202,16 +203,16 @@ Example request body:
 }
 ```
 
-No authentication required, returns a [User](#users-for-authentication)
+不需要认证，返回一个 [用户](#用户（Users (for authentication)）)
 
-Required fields: `email`, `password`
+必须包含请求字段： `email`, `password`
 
 
-### Registration:
+### 注册：
 
 `POST /api/users`
 
-Example request body:
+请求体样例：
 ```JSON
 {
   "user":{
@@ -222,25 +223,25 @@ Example request body:
 }
 ```
 
-No authentication required, returns a [User](#users-for-authentication)
+不需要认证，返回一个 [用户](#用户（Users (for authentication)）)
 
-Required fields: `email`, `username`, `password`
+必须包含请求字段：`email`, `username`, `password`
 
 
 
-### Get Current User
+### 登录用户信息
 
 `GET /api/user`
 
-Authentication required, returns a [User](#users-for-authentication) that's the current user
+认证必须，返回当前 [用户](#用户（Users (for authentication)）) 信息
 
 
 
-### Update User
+### 更新用户信息
 
 `PUT /api/user`
 
-Example request body:
+请求体样例：
 ```JSON
 {
   "user":{
@@ -251,93 +252,93 @@ Example request body:
 }
 ```
 
-Authentication required, returns the [User](#users-for-authentication)
+认证必须，返回 [用户](#用户（Users(for-authentication)）) 信息
 
 
-Accepted fields: `email`, `username`, `password`, `image`, `bio`
+必须包含请求字段：`email`, `username`, `password`, `image`, `bio`
 
 
 
-### Get Profile
+### 获取用户信息
 
 `GET /api/profiles/:username`
 
-Authentication optional, returns a [Profile](#profile)
+可选认证，返回 [用户简况](#用户简况（Profile）)
 
 
 
-### Follow user
+### 关注用户
 
 `POST /api/profiles/:username/follow`
 
-Authentication required, returns a [Profile](#profile)
+认证必须，返回 [用户简况](#用户简况（Profile）)
 
-No additional parameters required
+不需要其他参数
 
 
 
-### Unfollow user
+### 取消用户关注
 
 `DELETE /api/profiles/:username/follow`
 
-Authentication required, returns a [Profile](#profile)
+认证必须，返回 [用户简况](#用户简况（Profile）)
 
-No additional parameters required
+不需要其他参数
 
 
 
-### List Articles
+### 文章列表
 
 `GET /api/articles`
 
-Returns most recent articles globally by default, provide `tag`, `author` or `favorited` query parameter to filter results
+全局默认返回最近的文章，提供 `tag`， `author` 或者是 `favorited` 查询参数来过滤结果 
 
-Query Parameters:
+请求参数：
 
-Filter by tag:
+通过 `tag` 过滤
 
 `?tag=AngularJS`
 
-Filter by author:
+通过 `author` 过滤
 
 `?author=jake`
 
-Favorited by user:
+被某个用户喜欢
 
 `?favorited=jake`
 
-Limit number of articles (default is 20):
+限制文章数量 （默认值 20）：
 
 `?limit=20`
 
-Offset/skip number of articles (default is 0):
+偏移/跳过文章数量 （默认值 0）：
 
 `?offset=0`
 
-Authentication optional, will return [multiple articles](#multiple-articles), ordered by most recent first
+可选认证， 会返回最近的 [多个文章](多个文章（Multiple Articles）)
 
 
 
-### Feed Articles
+### 抓取文章
 
 `GET /api/articles/feed`
 
-Can also take `limit` and `offset` query parameters like [List Articles](#list-articles)
+同样可以使用 `limit` 和 `offset`请求参数像 [文章列表](#文章列表)
 
-Authentication required, will return [multiple articles](#multiple-articles) created by followed users, ordered by most recent first.
+认证必须， 将会返回多个用户所关注的用户最近发布的[多篇文章](#多个文章（Multiple Articles）)
 
 
-### Get Article
+### 文章详细
 
 `GET /api/articles/:slug`
 
-No authentication required, will return [single article](#single-article)
+非认证必须， 将会返回 [单个文章](#单个文章（Single Article）)
 
-### Create Article
+### 创建文章
 
 `POST /api/articles`
 
-Example request body:
+请求体样例：
 
 ```JSON
 {
@@ -350,19 +351,19 @@ Example request body:
 }
 ```
 
-Authentication required, will return an [Article](#single-article)
+认证必须， will return an [Article](#single-article)
 
-Required fields: `title`, `description`, `body`
+必须包含请求字段： `title`, `description`, `body`
 
-Optional fields: `tagList` as an array of Strings
+可选包含请求字段：`tagList` as an array of Strings
 
 
 
-### Update Article
+### 更新文章
 
 `PUT /api/articles/:slug`
 
-Example request body:
+请求体样例：
 
 ```JSON
 {
@@ -372,26 +373,26 @@ Example request body:
 }
 ```
 
-Authentication required, returns the updated [Article](#single-article)
+认证必须， 返回更新后的 [文章](#单个文章（Single Article）)
 
-Optional fields: `title`, `description`, `body`
+可选包含请求字段：`title`, `description`, `body`
 
-The `slug` also gets updated when the `title` is changed
+ `slug` 字段同样也会在 `title` 字段被更新后更新
 
 
-### Delete Article
+### 删除文章
 
 `DELETE /api/articles/:slug`
 
-Authentication required
+认证必须
 
 
 
-### Add Comments to an Article
+### 对一篇文章评论
 
 `POST /api/articles/:slug/comments`
 
-Example request body:
+请求体样例：
 
 ```JSON
 {
@@ -401,50 +402,50 @@ Example request body:
 }
 ```
 
-Authentication required, returns the created [Comment](#single-comment)
+认证必须， 返回创建好的 [评论](#单条评论（Single Comment）)
 
-Required field: `body`
+必须包含请求字段： `body`
 
 
 
-### Get Comments from an Article
+### 获取文章小的所有评论
 
 `GET /api/articles/:slug/comments`
 
-Authentication optional, returns [multiple comments](#multiple-comments)
+可选认证，返回 [多条评论](#多条评论（Multiple Comments）)
 
 
 
-### Delete Comment
+### 删除评论
 
 `DELETE /api/articles/:slug/comments/:id`
 
-Authentication required
+认证必须
 
 
 
-### Favorite Article
+### 喜欢一篇文章
 
 `POST /api/articles/:slug/favorite`
 
-Authentication required, returns the [Article](#single-article)
+认证必须， 返回 [文章](#单个文章（Single Article）)
 
-No additional parameters required
+不需要其他参数
 
 
 
-### Unfavorite Article
+### 取消喜欢一盘文章
 
 `DELETE /api/articles/:slug/favorite`
 
-Authentication required, returns the [Article](#single-article)
+认证必须， 返回 [文章](#单个文章（Single Article）)#single-article)
 
-No additional parameters required
+不需要其他参数
 
 
 
-### Get Tags
+### 获取标签
 
 `GET /api/tags`
 
-No authentication required, returns a [List of Tags](#list-of-tags)
+非认证必须，返回 [标签列表](#标签列表（List of Tags）)
